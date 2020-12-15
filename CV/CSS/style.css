@@ -1,0 +1,28 @@
+body {width: 1280px;
+    margin-left : auto ;
+    margin-right : auto;}
+
+#photo {float: left;
+    margin-left: 5%;
+    width: 20%;
+    height: 20%;}
+
+#presentation {
+    background-color: rgb(164, 164, 240);
+    float: right;
+    margin-right:5%;
+    margin-top: 20px;
+    width: 70%;
+    height: 70%;
+    padding: 10px;
+    }
+
+#colonne_1 {
+    float: right;
+    width: 50%;
+}
+
+#colonne_2 {
+    float: left;
+    width: 50%;
+}
