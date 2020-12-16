@@ -1,0 +1,24 @@
+body {margin-left:auto;
+    margin-right:auto;
+    background-color: #C6C0A0;
+    font-family : Georgia  }
+
+h2 {color: #7d775c;
+    font-size: larger;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px; }
+
+h3 {color: #7D775C;
+    font-size:larger;
+    font-weight: bold;
+    letter-spacing: 1px;}
+
+li {padding-top: 12px;}
+
+.vert {color: green}
+
+#duree {color:red;
+        font-size:larger;
+        text-decoration: underline;}
