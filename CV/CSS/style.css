@@ -1,5 +1,5 @@
 body {background-color:khaki;
-    width : 1280px;
+    max-width: 1280px;
     height: 100%;
     margin-left : auto ;
     margin-right : auto;}
@@ -7,33 +7,49 @@ body {background-color:khaki;
 #container {background-color: rgb(201, 201, 201);}
 
 #photo {float: left;
-    margin-left: 5%;
-    width: 20%;
-    height: 20%;}
+        width: 26%;
+        height: 26%;
+        max-height: 335px;}
 
 #presentation {
         background-color: rgb(164, 164, 240);
         float: right;
-        margin-right:5%;
-        margin-top: 20px;
+        padding: 2%;
         width: 70%;
-        height: 70%;
-        padding: 10px;}
+        height: 70%;}
 
 .icon  {width: 40px;
         height:40px;}
 
-.bouton {background-color: yellow;
-        font-style: x-large;
-        border: 2px solid black;}
+.bouton {font-size: 18px;
+        text-align: center;
+        float:left;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 20%;}
 
-#navBarre {}
+#menu {float: right;
+       width:74%;
+      background-color: yellow;
+        }
+        
+#menu a {text-decoration: none;
+        background-color: yellow;
+                color:tomato}
 
-#colonne_1 {float: right;
+#menu a:hover , #menu a:focus {
+        height:100%;
+        background-color: tomato;
+        color:yellow;} */
+
+.titre {}
+
+
+/* #colonne_1 {float: right;
     width: 50%;}
 
 #colonne_2 {float: left;
     width: 50%;}
 
 #colonne_3 {float: left;
-    width: 50%;}
+    width: 50%;} */
