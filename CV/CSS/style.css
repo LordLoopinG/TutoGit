@@ -9,7 +9,7 @@ body {background-color:khaki;
 #photo {float: left;
         width: 26%;
         height: 26%;
-        max-height: 335px;}
+        max-height: 330px;}
 
 #presentation {
         background-color: rgb(164, 164, 240);
@@ -42,14 +42,10 @@ body {background-color:khaki;
         background-color: tomato;
         color:yellow;} */
 
-.titre {}
+section {border: solid;
+        }
 
+.titre {font-size : 20px;
+        text-align: center;
+        }
 
-/* #colonne_1 {float: right;
-    width: 50%;}
-
-#colonne_2 {float: left;
-    width: 50%;}
-
-#colonne_3 {float: left;
-    width: 50%;} */
