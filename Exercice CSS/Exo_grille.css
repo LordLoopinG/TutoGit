@@ -66,6 +66,7 @@ div.menu>div {text-align:center;}
         float:left;
         background-color: lime;
         }
+
         div.xl{
         width:90%;
         margin:0 auto;
@@ -84,7 +85,7 @@ div.menu>div {text-align:center;}
         }
 
         .col-l-3{
-        width:25%;}
+        width:25%;
         }
 
         .col-l-1{
