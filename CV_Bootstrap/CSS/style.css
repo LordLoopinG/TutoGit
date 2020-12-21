@@ -1,0 +1,43 @@
+html {background-color: rgb(253, 181, 129)181, 129);}
+
+@media screen and (max-width: 576px) {
+        .icon-sm  {width: 10%;
+                height: auto;}
+}
+
+.icon {width: 10%;
+        height: auto;}
+
+.photo  {width : 50%;
+        height: auto;}
+
+.nav-item {background-color: chartreuse;}
+
+.timeline {text-align: center;}
+
+h3 {background-color: chocolate;
+        text-align: center;
+        color: white;
+        padding: 1rem;
+        margin:0;}
+
+ul {list-style-type: none;}
+
+h4 {text-align: center;
+        margin:0;}
+
+#web {background-color: rgb(149, 0, 255);
+        padding: 1rem;
+        margin:0;}
+
+#graphisme {background-color:yellowgreen ;}
+
+#block_1 {text-align: right;}
+
+#block_2 {text-align: left;}
+
+.right {text-align: right;}
+
+.center {text-align: center;}
+
+.left {text-align: left;}

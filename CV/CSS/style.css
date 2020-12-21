@@ -6,20 +6,20 @@ body {background-color:khaki;
 
 #container {background-color: rgb(201, 201, 201);}
 
-#photo {float: left;
+#header {background-color: rgb(144, 144, 255);
+        width: 100%;
+        height: 300px;}
+
+#photo {float:left;
         width: 26%;
-        height: 26%;
-        max-height: 330px;}
+        height:26%;}
 
-#presentation {
-        background-color: rgb(164, 164, 240);
-        float: right;
-        padding: 2%;
+#presentation {float:right;
         width: 70%;
-        height: 70%;}
+        padding: 2%;}
 
-.icon  {width: 40px;
-        height:40px;}
+.icon  {width: 3.3333%;
+        height: 3.3333%;}
 
 .bouton {font-size: 18px;
         text-align: center;
@@ -29,23 +29,24 @@ body {background-color:khaki;
         width: 20%;}
 
 #menu {float: right;
-       width:74%;
+       width: 100%;
       background-color: yellow;
         }
         
 #menu a {text-decoration: none;
         background-color: yellow;
-                color:tomato}
+        color:tomato;}
 
 #menu a:hover , #menu a:focus {
         height:100%;
         background-color: tomato;
-        color:yellow;} */
+        color:yellow;}
 
-section {border: solid;
-        }
-
-.titre {font-size : 20px;
+.titre {font-size : 20p;
+        color:cornsilk;
         text-align: center;
-        }
+        background-color: brown;
+        padding:10px;}
+
+@ media screen and (min-widht: 641px) {}
 
