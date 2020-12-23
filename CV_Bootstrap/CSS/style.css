@@ -1,4 +1,5 @@
-body {background-image: url(https://freedesignfile.com/upload/2018/04/Black-hexagon-carbon-fiber-background-vectors-05.jpg);}
+body {background-image: url(../src/Background/fond_9.jpg);
+        background-attachment: fixed;}
 
 .container {width: 90%;
             margin-left: auto;
@@ -27,3 +28,7 @@ ul {list-style-type: none;}
 
 .logo {width: 8%;
         height: auto;}
+
+#bonjour {font-size: xx-large}
+
+#stage {font-size: x-large;}
