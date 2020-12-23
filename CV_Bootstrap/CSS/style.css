@@ -21,3 +21,9 @@ ul {list-style-type: none;}
 .icon_2 {width: 100%;
         height: auto;
         float: left;}
+
+#fleche {width: 50%;
+        height: 50%;}
+
+.logo {width: 8%;
+        height: auto;}
