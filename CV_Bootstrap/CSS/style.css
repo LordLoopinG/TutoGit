@@ -32,3 +32,6 @@ ul {list-style-type: none;}
 #bonjour {font-size: xx-large}
 
 #stage {font-size: x-large;}
+
+.future {background-color: white;
+        opacity: 0.5;}
