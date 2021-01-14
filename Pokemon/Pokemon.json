@@ -1,0 +1,56 @@
+{ 
+    "nom" : "Zlatan",
+    "niveau" : "17",
+    "PV_max" : "99",
+    "PV_actuel" : "97",
+    "attaque" : [{
+        "nom" : "zlatanification",
+        "puissance" : "20",
+        "type" : "feu",
+        "PP_max" : "10",
+        "PP_actuel" : "8"
+    },
+    {"nom" : "PowerTir",
+        "puissance" : "50",
+        "type" : "tenebre",
+        "PP_max" : "25",
+        "PP_actuel" : "22"},
+    {"nom" : "Coudnez",
+        "puissance" : "500",
+        "type" : "tenebre",
+        "PP_max" : "5",
+        "PP_actuel" : "5"}
+    ]
+    {"statut" : "rien",
+    "dresseur" : "Milan AC",
+    "KO" : "false",
+    "type" : "feu", "tenebre"
+    }
+    { 
+        "nom" : "Steve",
+        "niveau" : "3",
+        "PV_max" : "50",
+        "PV_actuel" : "50",
+        "attaque" : [{
+            "nom" : "merdik",
+            "puissance" : "5",
+            "type" : "feu",
+            "PP_max" : "10",
+            "PP_actuel" : "8"
+        },
+        {"nom" : "",
+            "puissance" : "thauvin",
+            "type" : "tenebre",
+            "PP_max" : "25",
+            "PP_actuel" : "22"},
+        {"nom" : "payet",
+            "puissance" : "8",
+            "type" : "tenebre",
+            "PP_max" : "5",
+            "PP_actuel" : "5"}
+        ]
+        {"statut" : "rien",
+        "dresseur" : "Olympique Merdik",
+        "KO" : "false",
+        "type" : "feu", "tenebre"
+        }
