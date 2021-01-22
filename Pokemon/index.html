@@ -10,10 +10,10 @@
 
     <body>
 
-        <h1 class="white">Battle Pokemon</h1>
+        <h1 class="raw white">Battle Pokemon</h1>
 
         <figure class="fixed-bottom">  
-        <audio controls src="src/Ice Cube   Smoke Some Weed Instrumental.mp3" autoplay>
+        <audio controls src="src/Ice Cube   Smoke Some Weed Instrumental.mp3">
         </audio>
         </figure>
 
@@ -21,19 +21,37 @@
             <h2 class="col-6">Zlatan</h2>
             <h2 class="col-6">Steve</h2>
         </div>
-        <div></div>             <!--Progress bar a faire-->
 
+        <div class="row">
+            
+            <div class="progress col-5 p-0 mt-auto mb-auto">
+                <div id="progressZlatan" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <div class="col-1"></div>
+            
+            <div class="progress col-5 p-0 mt-auto mb-auto">
+                <div id="progressSteve" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+
+        <br>
+   
         <div class="row">
             <div class="col-6">
                 <img class="photo" src="src/zlatan.png" alt="Photo Zlatan">
             </div>
+            
             <div class="col-6">
                 <img class="photo" src="src/steve.png" alt="Photo Steve">
             </div>
     
         </div>
         <br>
-        <input type="button" value="Attaque" id="btnAttaque">
+        <input type="button" class="col-1" value="CoupDeNez" id="btnAttack1">
+        <input type="button" class="col-1" value="PowerTir" id="btnAttack2">
+        <input type="button" class="col-1" value="Missile" id="btnAttack3">
+        <input type="button" class="col-1" value="Akrobatik" id="btnAttack4">
         
 
 

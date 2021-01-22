@@ -4,7 +4,7 @@
     "PV_max" : "99",
     "PV_actuel" : "97",
     "attaque" : [{
-        "nom" : "zlatanification",
+        "nom" : "coudNez",
         "puissance" : "20",
         "type" : "feu",
         "PP_max" : "10",
@@ -22,7 +22,7 @@
         "PP_actuel" : "5"}
     ]
     {"statut" : "rien",
-    "dresseur" : "Milan AC",
+    "dresseur" : "PSG",
     "KO" : "false",
     "type" : "feu", "tenebre"
     }
@@ -34,13 +34,13 @@
         "attaque" : [{
             "nom" : "merdik",
             "puissance" : "5",
-            "type" : "feu",
+            "type" : "clochard",
             "PP_max" : "10",
             "PP_actuel" : "8"
         },
         {"nom" : "",
             "puissance" : "thauvin",
-            "type" : "tenebre",
+            "type" : "aLaRue",
             "PP_max" : "25",
             "PP_actuel" : "22"},
         {"nom" : "payet",
