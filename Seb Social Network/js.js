@@ -28,8 +28,6 @@ $(document).ready(function () {
     }
     */
 
-    //Declaration des variables
-
     //recup de JSON USERS
     var monJsonUsers
     if (!localStorage.getItem("localUsers")) {
@@ -54,8 +52,6 @@ $(document).ready(function () {
     $("#btnHome").click(()=>{
         location.reload()
     })
-
-
 
     $("#formRegister").submit(function (event) {
         event.preventDefault()
@@ -85,6 +81,7 @@ $(document).ready(function () {
                     objNewUser = {"id": newId, "pseudo": pseudo, "MdP": MdP}
                     monJsonUsers.users.push(objNewUser)
                     saveLocalStorage("localUsers", monJsonUsers)
+                    $("#divProfil").text(pseudo)
                     toTheWall()
                 }
             } else {
@@ -106,7 +103,7 @@ $(document).ready(function () {
                     objNewUser = {"id": newId, "pseudo": pseudo, "MdP": MdP}
                     monJsonUsers.users.push(objNewUser)
                     saveLocalStorage("localUsers", monJsonUsers)
-                    $("#divProfil").html(pseudo)
+                    $("#divProfil").text(pseudo)
                     toTheWall()
                 }
             }
@@ -128,10 +125,9 @@ $(document).ready(function () {
                 }
             }
             if (pseudoExist) {
-                console.log(monUser.MdP)
                 if (MdP == monUser.MdP) {
                     alert ("Content de te revoir " + monUser.pseudo)
-                    $("#divProfil").html(monUser.pseudo)
+                    $("#divProfil").text(monUser.pseudo)
                     toTheWall()
                 }else{
                     alert("Mauvaise identification, essaye encore")
@@ -145,18 +141,58 @@ $(document).ready(function () {
     }
 
     function toTheWall() {
-        $("#divLogin").html(`<div class="m-auto " id="videoIntro"><video class="modal-fullscreen" autoplay>
+        $("#divLogin").show()
+        $("#divRegister").hide()
+        $("#divLogin").html(`<div class="m-auto" id="videoIntro"><video class="modal-fullscreen" autoplay>
                                 <source src="src/LogoAnim.mp4" type="video/mp4">
                                 </video></div>`)
-
+        $("#videoIntro").click(() => {
+            $("#divLogin").hide()
+            $("#container").show()
+        })
     }
 
-    $("#videoIntro").click(() => {
-            $("#divLogin").hide
-            $("#divRegister").hide
-            $("#container").show
+    // The Wall
 
+    //Nouveau post
+    $("#btnNewPost").click(() => {
+        $(".overlay").show()
+        $("#container").hide()
+        //$("#newPostUser").text(user)
     })
+
+    $(".closeMe").click( () => {
+        $(".overlay").hide()
+        $("#container").show()
+    })
+
+    $("#btnUrlOk").click( () => {
+        $("#imgNewPost").attr("src", $("#urlNewPost").val())
+    })
+
+    $("#validPost").click( () => {
+        var user = $("#divProfil").text()
+        console.log(user)
+        let textNewPost = $("#textNewPost").val()
+        let urlNewPost = $("#urlNewPost").val()
+        // let date = new Date()                   // Attention, faire des manip sur le format
+
+        if (textNewPost == "" && urlNewPost == "") {
+            alert("Tu postes du vide !!! Recommences")
+        }
+        if (monJsonPosts.posts.length == 0) {
+            var idPost = 1
+        }else{
+            var idPost = monJsonPosts.posts[monJsonPosts.posts.length - 1].idPost + 1
+        }
+        var objNewPost = {"idPost" : idPost, "idAuteur" : user, "url" : urlNewPost, "text" : textNewPost, "likes" : [], "com" : []} // Manque Date
+        monJsonPosts.posts.push(objNewPost)
+        localStorage.setItem("localPosts", JSON.stringify(monJsonPosts))
+        textNewPost
+        $(".overlay").hide()
+        $("#container").show()
+    })
+
 
 
 })
