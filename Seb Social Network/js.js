@@ -55,6 +55,8 @@ $(document).ready(function () {
         location.reload()
     })
 
+
+
     $("#formRegister").submit(function (event) {
         event.preventDefault()
         var pseudo = $("#pseudoRegister").val()
@@ -63,8 +65,14 @@ $(document).ready(function () {
         register(pseudo, MdP, verifMdP)
     })
 
+    $("#formLogin").submit(function (event) {
+        event.preventDefault()
+        var pseudo = $("#pseudoLogin").val()
+        var MdP = $("#mdpLogin").val()
+        login(pseudo, MdP)
+    })
+
     function register(pseudo, MdP, verifMdP) {
-        console.log(pseudo,MdP, verifMdP)
         if (pseudo == "" || MdP == "" || verifMdP == "") {
             alert("Merci de completer tous les champs, bouffon(ne)")
         } else {
@@ -98,10 +106,38 @@ $(document).ready(function () {
                     objNewUser = {"id": newId, "pseudo": pseudo, "MdP": MdP}
                     monJsonUsers.users.push(objNewUser)
                     saveLocalStorage("localUsers", monJsonUsers)
+                    $("#divProfil").html(pseudo)
                     toTheWall()
                 }
             }
         }
+    }
+
+    function login(pseudo, MdP) {
+            if (pseudo == "" || MdP == "") {
+                alert("Rempli les 2 champs d'identification, bouffon(ne) !")
+            } else {
+                var pseudoExist = false
+                let x
+                for (x in monJsonUsers.users) {
+                    if (pseudo == monJsonUsers.users[x].pseudo) {
+                        var monUser = monJsonUsers.users[x]
+                        pseudoExist = true
+                        break
+                    }
+                }
+            }
+            if (pseudoExist) {
+                console.log(monUser.MdP)
+                if (MdP == monUser.MdP) {
+                    alert ("Content de te revoir " + monUser.pseudo)
+                    $("#divProfil").html(monUser.pseudo)
+                    toTheWall()
+                }else{
+                    alert("Mauvaise identification, essaye encore")
+                    location.reload()
+                }
+            }
     }
 
     function saveLocalStorage(local, json) {
@@ -109,39 +145,18 @@ $(document).ready(function () {
     }
 
     function toTheWall() {
-        $("#divLogin").html(`<div class="m-auto " id="videoIntro"><video class="modal-fullscreen" id="videoIntro" autoplay>
-                            <source src="src/LogoAnim.mp4" type="video/mp4">
-                            </video></div>`)
+        $("#divLogin").html(`<div class="m-auto " id="videoIntro"><video class="modal-fullscreen" autoplay>
+                                <source src="src/LogoAnim.mp4" type="video/mp4">
+                                </video></div>`)
+
     }
 
     $("#videoIntro").click(() => {
-        $("#divLogin").hide
-        $("#divRegister").hide
-        $("#container").show
+            $("#divLogin").hide
+            $("#divRegister").hide
+            $("#container").show
 
     })
 
-    function login(pseudo, Mdp) {
-        $("#formLogin").submit(function (event) {
-            event.preventDefault
-            if ($("#pseudo").val() == "" || $("#MdP").val() == "") {
-                alert("Rempli les 2 champs d'identification, bouffon(e) !")
-            } else {
-                let X
-                for (x in monJsonUsers.users) {
-                    let monUser = monJsonUsers.users[x]
-                    if ($("#pseudo").val() == monUser.pseudo) {
-                        if (($("#MdP").val() == monUser.MdP)) {
-                            alert("Content de te revoir " + monUser.pseudo)
-                            $("#divLogin").hide()
-                            $("#container").show()
-                            $("#divProfil").html(monUser.pseudo)
-                        } else {
-                            alert("Mauvaise identification, essaye encore")
-                        }
-                    }
-                }
-            }
-        })
-    }
+
 })
