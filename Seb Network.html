@@ -2,23 +2,71 @@
 <html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
-    <title>Seb Network</title>
+    <title>Seb Social Network</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
+    <style>
+        .overlay {
+            position: absolute;
+            display: none;
+            width: 100%;
+            background-color: rgba(255, 187, 0, 0.85);
+            padding-top: 5%;
+            padding-bottom: 5%;
+            text-align: center;
+        }
+
+        .img-full{
+            height: 100%;
+        }
+
+        .closeMe{
+            position: absolute;
+            mix-blend-mode: difference;
+            filter: invert(1);
+            font-size: 25px;
+            font-weight: bold;
+            left: 73%;
+            top: 10%;
+            cursor: pointer;
+        }
+    </style>
 
 </head>
-<body class="bg-dark h-100">
+<body class="bg-light">
 
-    <div class="row h-100" id="myDiv">
-        <form class="m-auto" id="formLogin">
-            <input type="text" value="Pseudo" id="pseudo"><br>
-            <input type="password" value="Mot de passe" id="MdP"><br>
-            <input type="submit" value="Connexion"><br>
-            <input type="button" value="Nouvel utilisateur" id="newUser">   
+    <div class="overlay" id="newPost">
+        <br><br>
+        <p id="newPostUser">user</p>
+        <input type="text" class="w-50 m-1" placeholder="Exprime toi" id="textNewPost">
+        <input type="button" class="btn-info m-1" value="OK" id="btnTextOk"><br>
+        <input type="text" class="w-50 m-1" placeholder="url de ton image" id="urlNewPost">
+        <input type="button" class="btn-info m-1" value="OK" id="btnUrlOk"><br>
+        <div class="m-auto w-50">
+            <img src="" class="w-100" alt="" id="imgNewPost">
+        </div>
+        <input type="button" class="btn-info m-1" value="Post !" id="validPost">
+        <div class="closeMe">X</div>
+    </div>
+
+    <div class="row m-0"  style="display: none" id="divLogin" >
+        <form class="m-auto p-3 bg-secondary" id="formLogin">
+            <div><img class="d-block m-auto" src="src/LogoPiratBlueSmall.png"></div><br>
+            <input type="text" class="mb-2 w-100" placeholder="Pseudo" id="pseudo"><br>
+            <input type="password" class="mb-2 w-100" placeholder="Mot de passe" id="MdP"><br>
+            <input type="submit" class="btn-danger w-100 mb-2" value="Connexion"><br><br>
+            <input type="button" class="btn-info w-100 mb-2" value="Nouvel utilisateur" id="newUser">   
         </form>
     </div>
+    
+    <div class="col-2 m-2 p-2 bg-secondary w-25 h-25" id="container">
+        <p id="divProfil">Zlatan</p>
+        <input type="button" class="btn-info w-100" value="Nouveau post" id="btnNewPost">
+    </div>
+
+       
 
 <script>
 $(document).ready(function () {
@@ -69,17 +117,16 @@ var allPosts = {
         monJsonPosts = JSON.parse(localStorage.getItem("localPosts"))
     }
 
-// Chargement de la Page d'accueil
-
 // Fonction Inscription
 
     $("#newUser").click(function () {
-        $("#myDiv").html(`
-        <form class="m-auto" id="formInscription">
-            <input type="text" placeholder="Pseudo" id="newPseudo"><br>
+        $("#divLogin").html(`
+        <form class="m-auto p-3 bg-secondary" id="formInscription">
+            <div><img class="d-block m-auto" src="src/LogoPiratBlueSmall.png" id="btnHome"></div><br>
+            <input type="text" class="mb-2" placeholder="Pseudo" id="newPseudo"><br>
             <input type="password" placeholder="Mot de passe" id="newMdP"><br>
-            <input type="password" placeholder="Mot de passe" id="newMdP2"><br>
-            <input type="submit" value="Inscription">
+            <input type="password" placeholder="Verif Mot de passe" id="newMdP2"><br><br>
+            <input type="submit" class="btn-danger w-100" value="Inscription">
         </form>
         `)
 
@@ -101,15 +148,15 @@ var allPosts = {
                             objNewUser = {"id" : newId , "pseudo" : $("#newPseudo").val(), "MdP" : $("#newMdP").val()}
                             monJsonUsers.jsonUsers.push(objNewUser)
                             localStorage.setItem("localUsers", JSON.stringify(monJsonUsers))
-                            alert ("Welcome")
+                            $("#divLogin").html(`<div class="m-auto " id="videoIntro"><video class="modal-fullscreen" id="videoIntro" autoplay>
+                            <source src="src/LogoAnim.mp4" type="video/mp4">
+                            </video></div>`)
                         }
                 }else{
                     //on va créer l'user APRES Verification
                     let x
                     for(x in monJsonUsers.jsonUsers) {
-                        let monUser = monJsonUsers.jsonUsers[x]
-
-                        if ( $("#newPseudo").val() == monUser.pseudo) {
+                        if ( $("#newPseudo").val() == monJsonUsers.jsonUsers[x].pseudo) {
                             alert("Pseudo déja existant, prends-en un autre !")
                         }else if ( $("#newMdP").val() != $("#newMdP2").val()) {                                       //verif que les 2 MdP sont identiques
                             alert("Mot de passe incorrecte")
@@ -119,7 +166,10 @@ var allPosts = {
                             objNewUser = {"id" : newId , "pseudo" : $("#newPseudo").val(), "MdP" : $("#newMdP").val()}
                             monJsonUsers.jsonUsers.push(objNewUser)
                             localStorage.setItem("localUsers", JSON.stringify(monJsonUsers))
-                            alert ("Welcome")
+                            $("#divLogin").html(`<div class="m-auto" id="videoIntro"><video class="modal-fullscreen" autoplay>
+                            <source src="src/LogoAnim.mp4" type="video/mp4">
+                            </video></div>`)
+                            
                         }
                     }
                 }
@@ -130,9 +180,69 @@ var allPosts = {
 //Fonction LOGIN  
 
     $("#formLogin").submit(function(event) {
-                event.preventDefault
+        event.preventDefault
+        if ( $("#pseudo").val() == "" || $("#MdP").val() == "") {
+            alert("Rempli les 2 champs d'identification, bouffon(e) !")
+        }else{
+            let X
+            for(x in monJsonUsers.jsonUsers) {
+                let monUser = monJsonUsers.jsonUsers[x]
+                if ( $("#pseudo").val() == monUser.pseudo ) {
+                    if (($("#MdP").val() == monUser.MdP)) {
+                    alert("Content de te revoir " + monUser.pseudo)
+                    $("#divLogin").hide()
+                    $("#container").show()
+                    $("#divProfil").html(monUser.pseudo)
+                    }else{alert("Mauvaise identification, essaye encore")}
+                }
+            }   
+        }         
+    })
 
 
+//MODE RESEAU SOCIAL
+
+    $("#videoIntro").click(function() {
+            $("#videoIntro").hide()
+    })
+
+    var user = $("#divProfil").val()
+
+    //Nouveau post
+    $("#btnNewPost").click(function() {
+            $(".overlay").show()
+            $("#container").hide()
+            $("#newPostUser").text(user)
+    })
+
+    $(".closeMe").click(function () {
+            $(".overlay").hide()
+            $("#container").show()
+    })
+
+ 
+    $("#btnUrlOk").click(function() {
+            $("#imgNewPost").attr("src", $("#urlNewPost").val())
+    })
+
+    $("#validPost").click(function() {
+            let textNewPost = $("#textNewPost").val()
+            let urlNewPost = $("#urlNewPost").val()
+           // let date = new Date()                   // Attention, faire des manip sur le format
+            
+            if (textNewPost == "" && urlNewPost == "") {
+                alert("Tu postes du vide !!! Recommences")
+            }
+
+            if (monJsonPosts.jsonPosts.length == 0) {
+                var idPost = 1
+            }else{
+                var idPost = monJsonPosts.jsonPosts[monJsonPosts.jsonPosts.length -1].id + 1
+            }
+
+            var objNewPost = {"idPost" : idPost, "idAuteur" : user, "url" : urlNewPost, "text" : textNewPost, "likes" : [], "com" : []} // Manque Date
+            monJsonPosts.jsonPosts.push(objNewPost)
+            localStorage.setItem("localPosts", JSON.stringify(monJsonPosts))
     })
 
 
