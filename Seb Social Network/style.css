@@ -1,3 +1,7 @@
+.colorWhite, a.colorWhite, a.colorWhite:hover {
+    color : cornsilk !important;
+}
+
 .overlay {
     position: absolute;
     display: none;
@@ -7,6 +11,7 @@
     padding-top: 5%;
     padding-bottom: 5%;
     text-align: center;
+    z-index: 1;
 }
 
 .closeMe{

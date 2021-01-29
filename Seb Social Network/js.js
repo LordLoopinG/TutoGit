@@ -3,7 +3,7 @@ $(document).ready(function () {
     /*JSON 1 User
     
     var allUsers = {
-        users : [{idUser : 1,
+        users : [{id : 1,
                 pseudo : "zlatan",
                 mdp : "123456"
                 },
@@ -49,7 +49,7 @@ $(document).ready(function () {
         $("#divLogin").hide()
     })
 
-    $("#btnHome").click(()=>{
+    $("#btnHome").click(() => {
         location.reload()
     })
 
@@ -81,7 +81,8 @@ $(document).ready(function () {
                     objNewUser = {"id": newId, "pseudo": pseudo, "MdP": MdP}
                     monJsonUsers.users.push(objNewUser)
                     saveLocalStorage("localUsers", monJsonUsers)
-                    $("#divProfil").text(pseudo)
+                    $("#userNamel").text(pseudo)
+                    $("#idConnectUser").text(monUser.id)
                     toTheWall()
                 }
             } else {
@@ -93,9 +94,9 @@ $(document).ready(function () {
                         break
                     }
                 }
-                if (pseudoExist){
+                if (pseudoExist) {
                     alert("Le pseudo existe déja, prend un autre")
-                }else if (MdP != verifMdP) {
+                } else if (MdP != verifMdP) {
                     alert("Mot de passe incorrecte")
                 } else {
                     alert("Inscription terminée. Bienvenu sur meilleur réseau social anomyne. Petit rappel : c'est pas parce c'est anomyme que c'est freestyle, vous êtes responsable de vos publications")
@@ -103,7 +104,8 @@ $(document).ready(function () {
                     objNewUser = {"id": newId, "pseudo": pseudo, "MdP": MdP}
                     monJsonUsers.users.push(objNewUser)
                     saveLocalStorage("localUsers", monJsonUsers)
-                    $("#divProfil").text(pseudo)
+                    $("#userName").text(pseudo)
+                    $("#idConnectUser").text(monUser.id)
                     toTheWall()
                 }
             }
@@ -111,29 +113,30 @@ $(document).ready(function () {
     }
 
     function login(pseudo, MdP) {
-            if (pseudo == "" || MdP == "") {
-                alert("Rempli les 2 champs d'identification, bouffon(ne) !")
+        if (pseudo == "" || MdP == "") {
+            alert("Rempli les 2 champs d'identification, bouffon(ne) !")
+        } else {
+            var pseudoExist = false
+            let x
+            for (x in monJsonUsers.users) {
+                if (pseudo == monJsonUsers.users[x].pseudo) {
+                    var monUser = monJsonUsers.users[x]
+                    pseudoExist = true
+                    break
+                }
+            }
+        }
+        if (pseudoExist) {
+            if (MdP == monUser.MdP) {
+                alert("Content de te revoir " + monUser.pseudo)
+                $("#userName").text(monUser.pseudo)
+                $("#idConnectUser").text(monUser.id)
+                toTheWall()
             } else {
-                var pseudoExist = false
-                let x
-                for (x in monJsonUsers.users) {
-                    if (pseudo == monJsonUsers.users[x].pseudo) {
-                        var monUser = monJsonUsers.users[x]
-                        pseudoExist = true
-                        break
-                    }
-                }
+                alert("Mauvaise identification, essaye encore")
+                location.reload()
             }
-            if (pseudoExist) {
-                if (MdP == monUser.MdP) {
-                    alert ("Content de te revoir " + monUser.pseudo)
-                    $("#divProfil").text(monUser.pseudo)
-                    toTheWall()
-                }else{
-                    alert("Mauvaise identification, essaye encore")
-                    location.reload()
-                }
-            }
+        }
     }
 
     function saveLocalStorage(local, json) {
@@ -149,6 +152,8 @@ $(document).ready(function () {
         $("#videoIntro").click(() => {
             $("#divLogin").hide()
             $("#container").show()
+            affichage()
+            allUsers()
         })
     }
 
@@ -157,42 +162,127 @@ $(document).ready(function () {
     //Nouveau post
     $("#btnNewPost").click(() => {
         $(".overlay").show()
-        $("#container").hide()
+        $("#container").show()
         //$("#newPostUser").text(user)
     })
 
-    $(".closeMe").click( () => {
+    $(".closeMe").click(() => {
         $(".overlay").hide()
         $("#container").show()
     })
 
-    $("#btnUrlOk").click( () => {
+    $("#btnUrlOk").click(() => {
         $("#imgNewPost").attr("src", $("#urlNewPost").val())
     })
 
-    $("#validPost").click( () => {
-        var user = $("#divProfil").text()
-        console.log(user)
+    $("#validPost").click(Post)
+
+    function Post() {
+        var user = $("#userName").text()
         let textNewPost = $("#textNewPost").val()
         let urlNewPost = $("#urlNewPost").val()
-        // let date = new Date()                   // Attention, faire des manip sur le format
+        let date = new Date()                   // Attention, faire des manip sur le format
+        console.log(date)
 
         if (textNewPost == "" && urlNewPost == "") {
             alert("Tu postes du vide !!! Recommences")
         }
         if (monJsonPosts.posts.length == 0) {
             var idPost = 1
-        }else{
+        } else {
             var idPost = monJsonPosts.posts[monJsonPosts.posts.length - 1].idPost + 1
         }
-        var objNewPost = {"idPost" : idPost, "idAuteur" : user, "url" : urlNewPost, "text" : textNewPost, "likes" : [], "com" : []} // Manque Date
+        var objNewPost = {
+            "idPost": idPost,
+            "idAuteur": user,
+            "url": urlNewPost,
+            "text": textNewPost,
+            "date" : date,
+            "likes": [],
+            "coms": []
+        }
         monJsonPosts.posts.push(objNewPost)
         localStorage.setItem("localPosts", JSON.stringify(monJsonPosts))
         textNewPost
         $(".overlay").hide()
         $("#container").show()
-    })
+        affichage()
+    }
 
+    //Affichage du Mur
+    function affichage(dataId = false) {
+        $("#wall").html("")
+        if (dataId == false) {
+            var user = $("#userName").text()
+            $("#wallUser").text(user)
+        } else {
+            for (i in monJsonUsers.users) {
+                let idUser = monJsonUsers.users[i].id
+                if (dataId == idUser) {
+                    var user = monJsonUsers.users[i].pseudo
+                    $("#wallUser").text(user)
+                    break
+                }
+            }
+        }
+        let x
+        for (x in monJsonPosts.posts) {
+            var post = monJsonPosts.posts[x]
+            if (user == post.idAuteur) {
+                let monId = post.idPost
+                let monText = post.text
+                let monUrl = post.url
+                let numberLikes = post.likes.length
+                let numberComs = post.coms.length
+                let maDate = post.date
 
+                $("#wall").prepend(`
+                <div class="border border-5 border-danger mb-5" id=${monId}>
+                    <p class="bg-white m-0">Posté le <span>${maDate}</span></p>
+                    <p class="bg-white m-0">${monText}</p>
+                    <div class="container-md">
+                        <img class="img-fluid" src="${monUrl}">
+                    </div>
+                    <a class="colorWhite col-1"><span>${numberLikes}</span> Like(s)</a>
+                    <input type="button" class="col-1 btn-danger btnLikes" value="Like">
+                    <a class="col-3 btnComs"><span>${numberComs}</span> commentaire(s)</a>
+                    <br>
+                </div>`)
+            }
+        }
+
+        $(".btnLikes").unbind("click",likes)
+        $(".btnLikes").click(likes)
+        $(".btnComs").unbind("click", commentaires)
+        $(".btnComs").click(commentaires)
+    }
+
+    //Affichage de tout les users
+    function allUsers() {
+        let x
+        for (x in monJsonUsers.users) {
+            let user = monJsonUsers.users[x].pseudo
+            let idUser = monJsonUsers.users[x].id
+            $("#listAllUsers").prepend(`
+                <li class="navigation" data-id="${idUser}">${user}</li>
+            `)
+        }
+
+        $(".navigation").click(function () {
+            var dataId = $(this).attr("data-id")
+            affichage(dataId)
+        })
+    }
+
+    //Gestion des Likes
+    function likes() {
+        let monId = $(this).parent.id     //ne fonctionne pas
+        console.log(monId)
+    }
+
+    //Gestion des commentaires
+    function commentaires() {
+
+    }
 
 })
