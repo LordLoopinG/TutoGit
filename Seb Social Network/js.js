@@ -245,7 +245,7 @@ $(document).ready(function () {
                     </div>
                     <a class="colorWhite col-1"><span>${numberLikes}</span> Like(s)</a>
                     <input type="button" class="col-1 btn-danger btnLikes" value="Like">
-                    <a class="col-3 btnComs"><span>${numberComs}</span> commentaire(s)</a>
+                    <a class="col-3 colorWhite btnComs"><span>${numberComs}</span> commentaire(s)</a>
                     <br>
                 </div>`)
             }
@@ -275,9 +275,19 @@ $(document).ready(function () {
     }
 
     //Gestion des Likes
+
     function likes() {
-        let monId = $(this).parent.id     //ne fonctionne pas
-        console.log(monId)
+        let idPost = $(this).parent().attr("id")     //id du Post
+        let idUser = $("#idConnectUser").text()
+        console.log(idPost)
+        console.log(idUser)
+        let x
+        for (x in monJsonPosts.posts) {
+            if (idPost = monJsonPosts.posts[x].id) {
+                monJsonPosts.posts[x].likes.push(idUser)
+                saveLocalStorage("localPosts", monJsonPosts)
+            }
+        }
     }
 
     //Gestion des commentaires

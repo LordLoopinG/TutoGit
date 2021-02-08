@@ -30,6 +30,8 @@ body {background-image: url(src/Background/fond_1.jpg);
         border: 0.1em solid purple;
         border-bottom: 0px;}
 
+.red {color: red;}
+
 #retour {width: 50%;
         height: 50%;}
 
