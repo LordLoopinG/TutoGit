@@ -10,8 +10,49 @@
 
 </head>
 
-<body>
+<body class="bg-dark">
+    
+    <div class="modal" id="modalLogin">
+        <div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Connectez-vous</h5>
+				</div>
+				<div class="modal-body">
+					<form action="" class="text-center" id="formLogin">
+						<input type="text" class="m-2" placeholder="email ou pseudo" id="myID"><br>
+						<input type="password" class="m-2" placeholder="mot de passe" id="myPassword"><br>
+						<input type="submit" class="btn btn-danger m-2" value="Connexion">
+					</form>
+				</div>
+                <div class="modal-footer">
+                    <div>Nouvel(le) utilisateur(trice) ? Soyez le bienvenue</div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnRegister">Inscription</button>
+                </div>
+			</div>
+		</div>
+    </div>
 
+    <div class="modal" id="modalRegister">
+        <div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Inscription</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCloseRegister">X</button>
+				</div>
+				<div class="modal-body">
+					<form action="" class="text-center" id="formRegister">
+						<input type="email" class="m-2" placeholder="votre email" id="myEmail"><br>
+                        <input type="text" class="m-2" placeholder="pseudo désiré" id="myPseudo"><br>
+						<input type="password" class="m-2" placeholder="mot de passe" id="myPassword1"><br>
+                        <input type="password" class="m-2" placeholder="verif mot de passe" id="myPassword2"><br>
+						<input type="submit" class="btn btn-danger m-2" value="Inscription">
+					</form>
+				</div>
+			</div>
+		</div>
+    </div>
+    
 <script src="js.js"></script>       
 
 </body>
