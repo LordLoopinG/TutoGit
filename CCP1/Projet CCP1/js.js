@@ -49,7 +49,6 @@ $(document).ready(function () {
         controleInputRegister()
     })
 
-    //Deconnexion
     $("#deconnex").click(function() {
         sessionStorage.clear()
         location.reload()
@@ -89,15 +88,15 @@ $(document).ready(function () {
         var idUser = uuidv4()
         let x
         for (x in jsonUsers.users) {                             //controle que l'email n'est pas deja utilisé
-            if (jsonUsers.user[x].email == emailRegister) {
+            if (jsonUsers.users[x].email == emailRegister) {
                 emailExist = true
                 break
             }
-            if (jsonUsers.user[x].pseudo == pseudoRegister) {   //controle que le pseudo n'est pas deja utilisé
+            if (jsonUsers.users[x].pseudo == pseudoRegister) {   //controle que le pseudo n'est pas deja utilisé
                 pseudoExist = true
                 break
             }
-            if (jsonUsers.user[x].id == idUser) {               //a reecrire (c tres peu probable que 2 uuidv4 soit deja utilisés, deja 1 c pas de bol, mais c pas secure a 100%)
+            if (jsonUsers.users[x].id == idUser) {               //a reecrire (c tres peu probable que 2 uuidv4 soit deja utilisés, deja 1 c pas de bol, mais c pas secure a 100%)
                 idUser = uuidv4()
             }           
         }
@@ -109,10 +108,11 @@ $(document).ready(function () {
         }
         if (!emailExist && !pseudoExist) {                      //si l'email et le pseudo ne sont pas utilisé, créé l'utilisateur
             var newUser = {
-                id : idUser,
-                email : emailRegister,
-                pseudo : pseudoRegister,
-                mdp : MdPRegister,
+                "id" : idUser,
+                "email" : emailRegister,
+                "pseudo" : pseudoRegister,
+                "mdp" : MdPRegister,
+                "photo" : ""
             }
 
             //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
@@ -139,6 +139,7 @@ $(document).ready(function () {
             for (x in jsonUsers.users) {
                 if (pseudo == jsonUsers.users[x].pseudo || pseudo == jsonUsers.users[x].email) {	//pseudo OK
                     var monUser = jsonUsers.users[x]
+                    console.log(monUser)
                     pseudoExist = true
                     break
                 }
