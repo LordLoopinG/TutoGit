@@ -1,5 +1,5 @@
 /*A FAIRE :
-        fonction : register, login, search, playlist, profil
+        fonction : register, login, deconnexion, search, playlist, profil
 
     barre de lexture Bootstrap :    <figure class="fixed-bottom">  
                                         <audio controls src="src/Ice Cube   Smoke Some Weed Instrumental.mp3"></audio>
@@ -19,9 +19,10 @@ $(document).ready(function () {
         myUser = JSON.parse(sessionStorage.getItem("sessionUser"))
     }
 
+    // recup les comptes d'utilisateurs du localStorage
     var jsonUsers
     if (!localStorage.getItem("accounts")) {
-        jsonUsers = {"user": []}
+        jsonUsers = {"users": []}
     } else {
         jsonUsers = JSON.parse(localStorage.getItem("accounts"))
     }
@@ -56,7 +57,7 @@ $(document).ready(function () {
         var MdP1 = $("#myPassword1").val()
         var MdP2 = $("#myPassword2").val()
 
-        if (emailRegister == "" || pseudoRegister == "" || MdP1 == "" || MdP2 == "") {                      //controle que tous les champs sont remplis
+        if (emailRegister == "" || pseudoRegister == "" || MdP1 == "" || MdP2 == "") {      //controle que tous les champs sont remplis
             alert("Merci de remplir tous les champs")
         } else {
             if (MdP1 != MdP2) {                                                             //controle que les 2 mots de passe sont identiques  
@@ -81,12 +82,12 @@ $(document).ready(function () {
         let pseudoExist = false
         var idUser = uuidv4()
         let x
-        for (x in jsonUsers.user) {
+        for (x in jsonUsers.users) {                             //controle que l'email n'est pas deja utilisé
             if (jsonUsers.user[x].email == emailRegister) {
                 emailExist = true
                 break
             }
-            if (jsonUsers.user[x].pseudo == pseudoRegister) {
+            if (jsonUsers.user[x].pseudo == pseudoRegister) {   //controle que le pseudo n'est pas deja utilisé
                 pseudoExist = true
                 break
             }
@@ -100,7 +101,7 @@ $(document).ready(function () {
         if (pseudoExist) {
             alert("Pseudo déja utilisé, merci d'en choisir un autre")
         }
-        if (!emailExist && !pseudoExist) {
+        if (!emailExist && !pseudoExist) {                      //si l'email et le pseudo ne sont pas utilisé, créé l'utilisateur
             var newUser = {
                 id : idUser,
                 email : emailRegister,
@@ -108,23 +109,48 @@ $(document).ready(function () {
                 mdp : MdPRegister,
             }
 
-            jsonUsers.user.push(newUser)
-            myUser.user.push(newUser)
+            //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
+            jsonUsers.users.push(newUser)   
             localStorage.setItem("accounts", JSON.stringify(jsonUsers))
+
+            //pousse le nouvel utilisateur dans le sessionStorage
+            myUser.user.push(newUser)
             sessionStorage.setItem("sessionUser", JSON.stringify(myUser))
             $("#modalRegister").hide()
             alert('Bienvenue à toi '+ pseudoRegister)
-
         }
     }
-
     //Fin REGISTER
 
     //Fonction LOGIN
+    function login(pseudo, MdP) {
 
+        if (pseudo == "" || MdP == "") {			//verif que les input pseudo et mot de passe sont rempli
+            alert("Merci de remplir les 2 champs")
+        } else {
+            var pseudoExist = false
+            let x									//recherche du pseudo dans le Json
+            for (x in jsonUsers.users) {
+                if (pseudo == jsonUsers.users[x].pseudo || pseudo == jsonUsers.users[x].email) {	//pseudo OK
+                    var monUser = jsonUsers.users[x]
+                    pseudoExist = true
+                    break
+                }
+            }
+        }
+        if (pseudoExist) {
+            if (MdP == monUser.mdp) {				    //MdP correspond au pseudo
+                    alert("Content de vous revoir " + monUser.pseudo)
+                    myUser.user.push(monUser)
+                    sessionStorage.setItem("sessionUser", JSON.stringify(myUser))   //Stockage de l'user dans le sessionStorage
+                    $("#modalLogin").hide()
+            } else {
+                alert("Mauvaise identification, essayez encore")
+                location.reload()
+            }
+        }
+    }
     //Fin Login
-
-    
 
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
