@@ -54,7 +54,7 @@ $(document).ready(function () {
         location.reload()
     })
 
-    //Controle des champs du formulaire d'inscription
+    //Fonction Controle des champs du formulaire d'inscription
     function controleInputRegister () {
         var inputRegister = false
         var emailRegister = $("#myEmail").val()
@@ -80,6 +80,7 @@ $(document).ready(function () {
         }
         if (inputRegister == true) {register(emailRegister, pseudoRegister, MdPRegister)}
     }
+    //Fin CONTROLE CHAMPS
 
     //Fonction REGISTER
     function register (emailRegister, pseudoRegister, MdPRegister) {
@@ -157,11 +158,53 @@ $(document).ready(function () {
             }
         }
     }
-    //Fin Login
+    //Fin LOGIN
 
-    //lecteur audio
+    //AFFICHAGE DE TOUS LES TITRES
 
-    //Fin LECTEUR AUDIO
+    $("#btnAffichage").click(function () {
+        affichage()
+    })
+
+    function affichage() {
+        console.log("affichage enclenché")
+    var templateTitre = `
+    <div class="card">
+        <div class="card-body row">
+            <div class="col-1 d-flex align-items-center">
+                <img src="src/Play-icon.png" class="w-50" alt="play">
+            </div>
+            <div class="col-2">
+                <img src="%imageUrl%" class="w-50" alt="pochetteAlbum">
+            </div>
+            <div class="col-4 d-flex align-items-center">
+                    <h3>%artist%</h3>
+            </div>
+            <div class="col-5 d-flex align-items-center">
+                    <h4>%name%</h4>
+            </div>
+        </div>
+    </div>
+    `
+    var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
+
+        $.getJSON(urlJsonMusique, function (data){
+            console.log(data)
+            let x
+            for (x in data.songs) {
+                var titre = templateTitre
+                titre = titre.replace(/%imageUrl%/g, data.songs[x].image)
+                titre = titre.replace(/%artist%/g, data.songs[x].artist)
+                titre = titre.replace(/%name%/g, data.songs[x].name)
+
+        
+                $("#accueil").prepend(titre)
+            }       
+        })
+    }   
+
+    //Fin AFFICHAGE
+
 
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
