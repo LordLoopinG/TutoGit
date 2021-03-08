@@ -11,6 +11,9 @@
 $(document).ready(function () {
 
     affichage()
+
+    const urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
+
     var myUser
     // recup sessionStorage s'il existe, sinon ouvre la modale de Login
     if (!sessionStorage.getItem("sessionUser")) {
@@ -50,6 +53,16 @@ $(document).ready(function () {
         controleInputRegister()
     })
 
+    $("#formSearch").submit(function(event) {
+        event.preventDefault()
+        var inputSearch = $("#mySearch").val()
+        search(inputSearch)
+    })
+
+    $("#accueilMenu").click(function () {
+        affichage()
+    })
+
     $("#deconnex").click(function() {
         sessionStorage.clear()
         location.reload()
@@ -87,8 +100,8 @@ $(document).ready(function () {
     function register (emailRegister, pseudoRegister, MdPRegister) {
         let emailExist = false
         let pseudoExist = false
-        var idUser = uuidv4()
         var idIcon
+        var idUser = uuidv4()
         let x
         for (x in jsonUsers.users) {                             //controle que l'email n'est pas deja utilisé
             if (jsonUsers.users[x].email == emailRegister) {
@@ -118,24 +131,26 @@ $(document).ready(function () {
             $(".icon").click(function () {
                 idIcon=$(this).attr("id")
                 $("#modalProfil").hide()
+            
 
-                var newUser = {
-                    "id" : idUser,
-                    "email" : emailRegister,
-                    "pseudo" : pseudoRegister,
-                    "mdp" : MdPRegister,
-                    "photo" : idIcon
-                }
-    
-                //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
-                jsonUsers.users.push(newUser)   
-                localStorage.setItem("accounts", JSON.stringify(jsonUsers))
-    
-                //pousse le nouvel utilisateur dans le sessionStorage
-                myUser.user.push(newUser)
-                sessionStorage.setItem("sessionUser", JSON.stringify(myUser))
+            var newUser = {
+                "id" : idUser,
+                "email" : emailRegister,
+                "pseudo" : pseudoRegister,
+                "mdp" : MdPRegister,
+                "photo" : idIcon
+            }
                 
-                alert('Bienvenue à toi '+ pseudoRegister)
+            //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
+            jsonUsers.users.push(newUser)   
+            localStorage.setItem("accounts", JSON.stringify(jsonUsers))
+
+            //pousse le nouvel utilisateur dans le sessionStorage
+            myUser.user.push(newUser)
+            sessionStorage.setItem("sessionUser", JSON.stringify(myUser))
+            
+            alert('Bienvenue à toi '+ pseudoRegister)
+
             })
         }
     }
@@ -173,17 +188,12 @@ $(document).ready(function () {
     //Fin LOGIN
 
     //AFFICHAGE DE TOUS LES TITRES
-
-    $("#accueilMenu").click(function () {
-        affichage()
-    })
-
     function affichage() {
     var templateTitre = `
-    <div class="card">
+    <div class="card" id="%id%">
         <div class="card-body row">
             <div class="col-1 d-flex align-items-center">
-                <img src="src/Play-icon.png" class="w-50" alt="play">
+                <button type="button" class="btn btn-danger btnLecture" id="%songUrl%">Ecouter</button>
             </div>
             <div class="col-2">
                 <img src="%imageUrl%" class="w-50" alt="pochetteAlbum">
@@ -197,23 +207,57 @@ $(document).ready(function () {
         </div>
     </div>
     `
-    var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
-
         $.getJSON(urlJsonMusique, function (data){
             let x
             for (x in data.songs) {
                 var titre = templateTitre
+                titre = titre.replace(/%id%/g, data.songs[x].id)
+                titre = titre.replace(/%songUrl%/g, data.songs[x].song)
                 titre = titre.replace(/%imageUrl%/g, data.songs[x].image)
                 titre = titre.replace(/%artist%/g, data.songs[x].artist)
                 titre = titre.replace(/%name%/g, data.songs[x].name)
 
+                
+               
+                $(".btnLecture").unbind("click")                        //Ne fonctionne pas pour le dernier affiché ???? A corriger, probleme de réécriture du DOM ???
+                
+
                 $("#accueil").prepend(titre)
             }       
-        })
+        })  
     }   
 
     //Fin AFFICHAGE
 
+    //Fonction SEARCH
+    function search(recherche) {
+
+        $.getJSON(urlJsonMusique, function (data){
+            let x
+            for (x in data.songs) {
+                if (recherche = )
+                
+              
+            }       
+        })  
+
+    }
+
+    $(".btnLecture").click(function (event) {
+        event.preventDefault()
+        console.log("ok")
+        var songUrl = $(this).attr("id")
+        lecture(songUrl)
+    })
+
+    //Fonction LECTURE
+        function lecture(url) {
+        
+            var audio = new Audio
+            audio.setAttribute("src", url)
+            audio.play()
+
+        }
 
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {

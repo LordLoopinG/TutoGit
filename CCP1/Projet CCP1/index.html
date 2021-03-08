@@ -95,8 +95,8 @@
                 <a class="nav-link" href="#accueil" id="accueilMenu">Accueil</a>
                 <a class="nav-link" href="#profil">Profil</a>
                 <a class="nav-link" href="#playlist">Playlist</a>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search">
+                <form class="d-flex" id="formSearch">
+                    <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search" id="mySearch">
                     <button class="btn btn-outline-success" type="submit">Trouve</button>
                 </form>
                 <button class="btn btn-danger ms-5" id="deconnex">Deconnexion</button>
@@ -112,12 +112,10 @@
     </section>
     
 <!-- Player -->
-    <div class="row fixed-bottom">
-        <div class="d-flex justify-content-center">
-            <figure>  
-                <audio controls src="src/Without Me.mp3" id="lecteurAudio"></audio>
-            </figure>
-        </div>
+    <div class="row fixed-bottom justify-content-center bg-dark">
+        <img src="src/Backward-icon.png" class="btnIcon" alt="bouton precedent" id="btnBack">
+        <img src="src/Forward-icon.png" class="btnIcon" alt="bouton suivant" id="btnNext">
+        <img src="src/Play-icon.png" class="btnIcon" alt="bouton lecture" id="btnPlay">
     </div>
 
 </div>
