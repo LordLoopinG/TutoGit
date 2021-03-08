@@ -13,7 +13,7 @@
 <body class="bg-dark" id="body">
     
 <!-- Modal LOGIN -->   
-    <div class="modal" id="modalLogin">
+    <div class="modal bg-dark" id="modalLogin">
         <div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -35,21 +35,46 @@
     </div>
 
 <!-- Modal REGISTER -->
-    <div class="modal" id="modalRegister">
+<div class="modal bg-dark" id="modalRegister">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Inscription</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCloseRegister"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="text-center" id="formRegister">
+                    <input type="email" class="m-2" placeholder="votre email" id="myEmail"><br>
+                    <input type="text" class="m-2" placeholder="pseudo désiré" id="myPseudo"><br>
+                    <input type="password" class="m-2" placeholder="mot de passe" id="myPassword1"><br>
+                    <input type="password" class="m-2" placeholder="verif mot de passe" id="myPassword2"><br>
+                    <input type="submit" class="btn btn-danger m-2" value="Inscription">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal PHOTO PROFIL -->
+    <div class="modal bg-dark" id="modalProfil">
         <div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Inscription</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCloseRegister"></button>
+				<div class="modal-header  justify-content-center">
+					<h5 class="modal-title">Choisissez votre image de profil</h5>
 				</div>
-				<div class="modal-body">
-					<form action="" class="text-center" id="formRegister">
-						<input type="email" class="m-2" placeholder="votre email" id="myEmail"><br>
-                        <input type="text" class="m-2" placeholder="pseudo désiré" id="myPseudo"><br>
-						<input type="password" class="m-2" placeholder="mot de passe" id="myPassword1"><br>
-                        <input type="password" class="m-2" placeholder="verif mot de passe" id="myPassword2"><br>
-						<input type="submit" class="btn btn-danger m-2" value="Inscription">
-					</form>
+				<div class="modal-body" id="iconProfil">
+						<img src="src/Profil/01.png" class="w-25 icon" alt="icon01" id="icon01">
+                        <img src="src/Profil/02.png" class="w-25 icon" alt="icon02" id="icon02">
+                        <img src="src/Profil/03.png" class="w-25 icon" alt="icon03" id="icon03">
+                        <img src="src/Profil/04.png" class="w-25 icon" alt="icon04" id="icon04">
+                        <img src="src/Profil/05.png" class="w-25 icon" alt="icon05" id="icon05">
+                        <img src="src/Profil/06.png" class="w-25 icon" alt="icon06" id="icon06">
+                        <img src="src/Profil/07.png" class="w-25 icon" alt="icon07" id="icon07">
+                        <img src="src/Profil/08.png" class="w-25 icon" alt="icon08" id="icon08">
+                        <img src="src/Profil/09.png" class="w-25 icon" alt="icon09" id="icon09">
+                        <img src="src/Profil/10.png" class="w-25 icon" alt="icon10" id="icon10">
+                        <img src="src/Profil/11.png" class="w-25 icon" alt="icon11" id="icon11">
+                        <img src="src/Profil/12.png" class="w-25 icon" alt="icon12" id="icon12">
 				</div>
 			</div>
 		</div>
@@ -67,7 +92,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav float-end">
-                <a class="nav-link" href="index.html">Accueil</a>
+                <a class="nav-link" href="#accueil" id="accueilMenu">Accueil</a>
                 <a class="nav-link" href="#profil">Profil</a>
                 <a class="nav-link" href="#playlist">Playlist</a>
                 <form class="d-flex">
@@ -81,26 +106,9 @@
     <br>
     <br>
     <br>
-
-    <button id="btnAffichage">affichage</button>
     
     <section id="accueil">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-1 d-flex align-items-center">
-                    <img src="src/Play-icon.png" class="w-50" alt="play">
-                </div>
-                <div class="col-2">
-                    <img src="src/young-wild-free.jpg" class="w-50" alt="pochetteAlbum">
-                </div>
-                <div class="col-4 d-flex align-items-center">
-                        <h3>Artiste</h3>
-                </div>
-                <div class="col-5 d-flex align-items-center">
-                        <h4>Titre du morceau</h4>
-                </div>
-            </div>
-        </div>
+        
     </section>
     
 <!-- Player -->

@@ -10,6 +10,7 @@
 
 $(document).ready(function () {
 
+    affichage()
     var myUser
     // recup sessionStorage s'il existe, sinon ouvre la modale de Login
     if (!sessionStorage.getItem("sessionUser")) {
@@ -87,6 +88,7 @@ $(document).ready(function () {
         let emailExist = false
         let pseudoExist = false
         var idUser = uuidv4()
+        var idIcon
         let x
         for (x in jsonUsers.users) {                             //controle que l'email n'est pas deja utilisé
             if (jsonUsers.users[x].email == emailRegister) {
@@ -108,23 +110,33 @@ $(document).ready(function () {
             alert("Pseudo déja utilisé, merci d'en choisir un autre")
         }
         if (!emailExist && !pseudoExist) {                      //si l'email et le pseudo ne sont pas utilisé, créé l'utilisateur
-            var newUser = {
-                "id" : idUser,
-                "email" : emailRegister,
-                "pseudo" : pseudoRegister,
-                "mdp" : MdPRegister,
-                "photo" : ""
-            }
 
-            //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
-            jsonUsers.users.push(newUser)   
-            localStorage.setItem("accounts", JSON.stringify(jsonUsers))
-
-            //pousse le nouvel utilisateur dans le sessionStorage
-            myUser.user.push(newUser)
-            sessionStorage.setItem("sessionUser", JSON.stringify(myUser))
             $("#modalRegister").hide()
-            alert('Bienvenue à toi '+ pseudoRegister)
+            $("#modalProfil").show()
+
+            //choix de l'image de profil
+            $(".icon").click(function () {
+                idIcon=$(this).attr("id")
+                $("#modalProfil").hide()
+
+                var newUser = {
+                    "id" : idUser,
+                    "email" : emailRegister,
+                    "pseudo" : pseudoRegister,
+                    "mdp" : MdPRegister,
+                    "photo" : idIcon
+                }
+    
+                //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
+                jsonUsers.users.push(newUser)   
+                localStorage.setItem("accounts", JSON.stringify(jsonUsers))
+    
+                //pousse le nouvel utilisateur dans le sessionStorage
+                myUser.user.push(newUser)
+                sessionStorage.setItem("sessionUser", JSON.stringify(myUser))
+                
+                alert('Bienvenue à toi '+ pseudoRegister)
+            })
         }
     }
     //Fin REGISTER
@@ -147,7 +159,7 @@ $(document).ready(function () {
             }
         }
         if (pseudoExist) {
-            if (MdP == monUser.mdp) {				    //MdP correspond au pseudo
+            if (MdP == monUser.mdp) {				  //MdP correspond au pseudo
                     alert("Content de vous revoir " + monUser.pseudo)
                     myUser.user.push(monUser)
                     sessionStorage.setItem("sessionUser", JSON.stringify(myUser))   //Stockage de l'user dans le sessionStorage
@@ -162,12 +174,11 @@ $(document).ready(function () {
 
     //AFFICHAGE DE TOUS LES TITRES
 
-    $("#btnAffichage").click(function () {
+    $("#accueilMenu").click(function () {
         affichage()
     })
 
     function affichage() {
-        console.log("affichage enclenché")
     var templateTitre = `
     <div class="card">
         <div class="card-body row">
@@ -189,7 +200,6 @@ $(document).ready(function () {
     var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
 
         $.getJSON(urlJsonMusique, function (data){
-            console.log(data)
             let x
             for (x in data.songs) {
                 var titre = templateTitre
@@ -197,7 +207,6 @@ $(document).ready(function () {
                 titre = titre.replace(/%artist%/g, data.songs[x].artist)
                 titre = titre.replace(/%name%/g, data.songs[x].name)
 
-        
                 $("#accueil").prepend(titre)
             }       
         })
