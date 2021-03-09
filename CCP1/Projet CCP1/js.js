@@ -1,18 +1,12 @@
 /*A FAIRE :
         fonction : register, login, deconnexion, search, playlist, profil
 
-    barre de lexture Bootstrap :    <figure class="fixed-bottom">  
-                                        <audio controls src="src/Ice Cube   Smoke Some Weed Instrumental.mp3"></audio>
-                                    </figure>
-
     BONUS : add mp3
     */
 
 $(document).ready(function () {
 
     affichage()
-
-    const urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
 
     var myUser
     // recup sessionStorage s'il existe, sinon ouvre la modale de Login
@@ -29,6 +23,14 @@ $(document).ready(function () {
         jsonUsers = {"users": []}
     } else {
         jsonUsers = JSON.parse(localStorage.getItem("accounts"))
+    }
+
+    // recup les listes (Playlists, Favoris) du localStorage
+    var jsonLists
+    if (!localStorage.getItem("preferences")) {
+        jsonLists = {"users": []}
+    } else {
+        jsonLists = JSON.parse(localStorage.getItem("preferences"))
     }
    
     $("#btnRegister").click(function () {
@@ -100,7 +102,7 @@ $(document).ready(function () {
     function register (emailRegister, pseudoRegister, MdPRegister) {
         let emailExist = false
         let pseudoExist = false
-        var idIcon
+        var urlIcon
         var idUser = uuidv4()
         let x
         for (x in jsonUsers.users) {                             //controle que l'email n'est pas deja utilisé
@@ -129,21 +131,33 @@ $(document).ready(function () {
 
             //choix de l'image de profil
             $(".icon").click(function () {
-                idIcon=$(this).attr("id")
+                urlIcon=$(this).attr("src")
                 $("#modalProfil").hide()
             
-
             var newUser = {
                 "id" : idUser,
                 "email" : emailRegister,
                 "pseudo" : pseudoRegister,
                 "mdp" : MdPRegister,
-                "photo" : idIcon
+                "photo" : urlIcon
+            }
+
+            var newUserPreference = {
+                "id" : idUser,
+                "playlist" : {  "id" : "",
+                                "name" : "",
+                                "songs" : []
+                            },
+                "favoris" : []
             }
                 
             //pousse le nouvel utilisateur dans le JSON et l'enregistre dans le localStorage
             jsonUsers.users.push(newUser)   
             localStorage.setItem("accounts", JSON.stringify(jsonUsers))
+
+            jsonLists.users.push(newUserPreference)
+            localStorage.setItem("preferences", JSON.stringify(jsonLists))
+
 
             //pousse le nouvel utilisateur dans le sessionStorage
             myUser.user.push(newUser)
@@ -167,7 +181,6 @@ $(document).ready(function () {
             for (x in jsonUsers.users) {
                 if (pseudo == jsonUsers.users[x].pseudo || pseudo == jsonUsers.users[x].email) {	//pseudo OK
                     var monUser = jsonUsers.users[x]
-                    console.log(monUser)
                     pseudoExist = true
                     break
                 }
@@ -193,71 +206,158 @@ $(document).ready(function () {
     <div class="card" id="%id%">
         <div class="card-body row">
             <div class="col-1 d-flex align-items-center">
-                <button type="button" class="btn btn-danger btnLecture" id="%songUrl%">Ecouter</button>
+                <button type="button" class="btn btn-danger btnLecture">Ecouter</button>
             </div>
             <div class="col-2">
                 <img src="%imageUrl%" class="w-50" alt="pochetteAlbum">
             </div>
-            <div class="col-4 d-flex align-items-center">
+            <div class="col-3 d-flex align-items-center">
                     <h3>%artist%</h3>
             </div>
-            <div class="col-5 d-flex align-items-center">
+            <div class="col-4 d-flex align-items-center">
                     <h4>%name%</h4>
+            </div>
+            <div class="col-1 d-flex align-items-center" id="iconFav">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="col-1 d-flex align-items-center">
+                <button type="button" class="btn btn-primary btnPlaylist">+</button>
             </div>
         </div>
     </div>
     `
+
+    var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
+
         $.getJSON(urlJsonMusique, function (data){
             let x
             for (x in data.songs) {
                 var titre = templateTitre
                 titre = titre.replace(/%id%/g, data.songs[x].id)
-                titre = titre.replace(/%songUrl%/g, data.songs[x].song)
                 titre = titre.replace(/%imageUrl%/g, data.songs[x].image)
                 titre = titre.replace(/%artist%/g, data.songs[x].artist)
                 titre = titre.replace(/%name%/g, data.songs[x].name)
-
-                
                
-                $(".btnLecture").unbind("click")                        //Ne fonctionne pas pour le dernier affiché ???? A corriger, probleme de réécriture du DOM ???
-                
-
-                $("#accueil").prepend(titre)
+                $(".btnLecture").unbind("click")
+                $(".btnLecture").click(lecture)
+                $(".btnPlaylist").unbind("click")
+                $(".btnPlaylist").click(addToPlaylist)
+                $("#accueil").append(titre)
             }       
         })  
     }   
-
     //Fin AFFICHAGE
 
-    //Fonction SEARCH
-    function search(recherche) {
+    // PLAYLIST
+    $("#btnNewPlaylist").click(function () {
+        $("#modalMyPlaylist").hide()
+        $("#modalNewPlaylist").show()		
+    })
+
+    $("#btnCloseModalMyPlaylist").click(function () {		
+        $("#modalMyPlaylist").hide()
+    })
+
+    $("#btnCloseModalNewPlaylist").click(function () {
+        $("#modalNewPlaylist").hide()		
+        $("#modalMyPlaylist").show()
+    })
+
+    $("#formNewPlaylist").submit(function(event) {
+        event.preventDefault()
+        createPlaylist()
+    })
+
+    function createPlaylist() {
+        var newName = $("#inputNamePlaylist").val()
+        console.log(newName)
+        var monId = myUser.user[0].id
+        console.log(monId)
+        console.log(jsonLists)
+        let x
+        for (x in jsonLists.users) {
+            console.log(x)
+            if (monId == jsonLists.users[x].id) {
+                let a
+                for (a in jsonLists.users[x].playlists) {
+                    console.log(a)
+                    if (newName = sonLists.users[x].playlists[a].name) {
+                        alerte("Nom de playlist déja existant")
+                    }
+                }
+            } else {
+                var newObjPlaylist = {
+                        "id" : monId,
+                        "playlist" : {  "id" : uuidv4,
+                                        "name" : newName,
+                                        "songs" : []
+                                    },
+                        "favoris" : []
+                }
+                jsonLists.users.push(newObjPlaylist)
+                localStorage.setItem("preferences", JSON.stringify(jsonLists))
+                console.log("ok")
+            }
+        }
+    }   
+
+    /*var newUser = {
+                "id" : idUser,
+                "email" : emailRegister,
+                "pseudo" : pseudoRegister,
+                "mdp" : MdPRegister,
+                "photo" : urlIcon
+            }*/
+
+    function addToPlaylist() {
+        $("#modalMyPlaylist").show()
+        var idSong = $(this).parent().parent().parent().attr("id")
+        console.log(idSong)
+    }
+
+    
+    /*Fonction SEARCH
+    //function search(recherche) {
+
+      $.getJSON(urlJsonMusique, function (data){
+           let x
+            for (x in data.songs) {
+                $(recherche).find(data.songs[x].artist)
+                $(recherche).find(data.songs[x].name)
+            }       
+        })  
+    } */
+
+    //Fonction LECTURE
+    function lecture() {
+        var songId = $(this).parent().parent().parent().attr("id")
+        var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
+        var audio = new Audio
 
         $.getJSON(urlJsonMusique, function (data){
             let x
             for (x in data.songs) {
-                if (recherche = )
-                
-              
+                if (songId == data.songs[x].id) {
+                    var urlSong = data.songs[x].song
+                    
+                audio.setAttribute("src", urlSong)
+                audio.play()
+
+                }
             }       
         })  
 
-    }
+        $("#btnPause").click (function() {
+            audio.pause()
+        })
 
-    $(".btnLecture").click(function (event) {
-        event.preventDefault()
-        console.log("ok")
-        var songUrl = $(this).attr("id")
-        lecture(songUrl)
-    })
-
-    //Fonction LECTURE
-        function lecture(url) {
-        
-            var audio = new Audio
-            audio.setAttribute("src", url)
+        $("#btnPlay").click (function() {
             audio.play()
+        })
 
-        }
+        $("#btnback").click (function() {})
+            
+    }
 
     function uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
