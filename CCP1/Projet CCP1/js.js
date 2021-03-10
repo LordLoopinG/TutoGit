@@ -96,8 +96,7 @@ $(document).ready(function () {
         }
         if (inputRegister == true) {register(emailRegister, pseudoRegister, MdPRegister)}
     }
-    //Fin CONTROLE CHAMPS
-
+    
     //Fonction REGISTER
     function register (emailRegister, pseudoRegister, MdPRegister) {
         let emailExist = false
@@ -144,7 +143,7 @@ $(document).ready(function () {
 
             var newUserPreference = {
                 "id" : idUser,
-                "playlist" : [{  "id" : "",
+                "playlist" : [{ "id" : "",
                                 "name" : "",
                                 "songs" : []
                             }],
@@ -168,8 +167,7 @@ $(document).ready(function () {
             })
         }
     }
-    //Fin REGISTER
-
+    
     //Fonction LOGIN
     function login(pseudo, MdP) {
 
@@ -198,7 +196,6 @@ $(document).ready(function () {
             }
         }
     }
-    //Fin LOGIN
 
     //AFFICHAGE DE TOUS LES TITRES
     function affichage() {
@@ -246,7 +243,6 @@ $(document).ready(function () {
             }       
         })  
     }   
-    //Fin AFFICHAGE
 
     // PLAYLIST
     $("#btnNewPlaylist").click(function () {
@@ -284,14 +280,13 @@ $(document).ready(function () {
         }
 
         let nameOK = true
-        let a
+        let a = 1
         for (a in monUser.playlist) {
             if (newName == monUser.playlist[a].name) {
                     alert("Nom de playlist déja existant")
                     nameOK = false
             }
         }
-        console.log(nameOK)
 
         if (nameOK) {
             var newObjPlaylist = {  "id" : uuidv4(),
@@ -300,6 +295,7 @@ $(document).ready(function () {
                                     }
             monUser.playlist.push(newObjPlaylist)
             localStorage.setItem("preferences", JSON.stringify(jsonLists))
+            afficheMyPlaylist()
             $("#modalNewPlaylist").hide()		
             $("#modalMyPlaylist").show()
         }       
@@ -308,10 +304,60 @@ $(document).ready(function () {
     function addToPlaylist() {
         $("#modalMyPlaylist").show()
         var idSong = $(this).parent().parent().parent().attr("id")
-        console.log(idSong)
+        afficheMyPlaylist()
+
+        $(".btnPlaylist").click(function() {
+            var idPlaylist = $(this).parent().parent().attr("id")
+            console.log(idPlaylist)
+            var monId = myUser.user[0].id
+            let x
+            for (x in jsonLists.users) {
+                if (monId == jsonLists.users[x].id) {
+                    var monUser = jsonLists.users[x]      
+                }
+            }
+            let a
+            for (a in monUser.playlist) {
+                if (idPlaylist == monUser.playlist[a].id) {
+                    var maPlaylist = monUser.playlist[a]
+                }
+            }
+            console.log(idSong)
+            maPlaylist.songs.push(idSong)
+            localStorage.setItem("preferences", JSON.stringify(jsonLists))
+
+            $("#modalMyPlaylist").hide()
+        })
     }
 
-    
+    function afficheMyPlaylist () {
+        var templatePlaylist = `
+            <div class="row m-1" id="%id%">
+                <div class="col-1 d-flex align-items-center">
+                    <button type="button" class="btn btn-primary btnPlaylist">+</button>
+                </div>
+                <div class="col-11 d-flex align-items-center">
+                    <h5 class="col-8">%namePlaylist%</h5>
+                </div>            
+            </div>
+            `
+        var monId = myUser.user[0].id
+        $("#myPlaylist").text("")
+        let x
+        for (x in jsonLists.users) {
+            if (monId == jsonLists.users[x].id) {
+                var monUser = jsonLists.users[x]      
+            }
+        }
+        let a                                       // BUG a corriger: ne pas afficher la playlist [0] qui est vide, affiche un btn +
+        for (a in monUser.playlist) {
+            var texte = templatePlaylist
+            texte = texte.replace(/%namePlaylist%/g, monUser.playlist[a].name)
+            texte = texte.replace(/%id%/g, monUser.playlist[a].id)
+            $("#myPlaylist").append(texte)
+        }
+    }
+
     /*Fonction SEARCH
     //function search(recherche) {
 
