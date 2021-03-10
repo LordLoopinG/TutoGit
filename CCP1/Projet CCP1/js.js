@@ -218,7 +218,7 @@ $(document).ready(function () {
                 <i class="fas fa-heart"></i>
             </div>
             <div class="col-1 d-flex align-items-center">
-                <button type="button" class="btn btn-primary btnPlaylist">+</button>
+                <button type="button" class="btn btn-primary btnAddToPlaylist">+</button>
             </div>
         </div>
     </div>
@@ -325,8 +325,9 @@ $(document).ready(function () {
             console.log(idSong)
             maPlaylist.songs.push(idSong)
             localStorage.setItem("preferences", JSON.stringify(jsonLists))
-
+        
             $("#modalMyPlaylist").hide()
+            alert("Votre titre a bien été ajouté a la playlist")
         })
     }
 
@@ -358,17 +359,23 @@ $(document).ready(function () {
         }
     }
 
-    /*Fonction SEARCH
-    //function search(recherche) {
+    
+    function search(recherche) {                //Ne fonctionne que si la recherche est exactement identique  au titre ou a l'artiste
 
-      $.getJSON(urlJsonMusique, function (data){
-           let x
-            for (x in data.songs) {
-                $(recherche).find(data.songs[x].artist)
-                $(recherche).find(data.songs[x].name)
-            }       
+        var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
+
+        $.getJSON(urlJsonMusique, function (data) {
+            $.each(data.songs, function(key, val) {
+                //if (val.name == recherche || val.artist == recherche) {
+                //    alert("trouvé");
+                //}
+
+            if (val.name.search(recherche) !=-1 || val.artist.search(recherche) !=-1) {
+                alert(val.name + " de " + val.artist)
+            }    
+            })      
         })  
-    } */
+    }
 
     //Fonction LECTURE
     function lecture() {
