@@ -144,10 +144,10 @@ $(document).ready(function () {
 
             var newUserPreference = {
                 "id" : idUser,
-                "playlist" : {  "id" : "",
+                "playlist" : [{  "id" : "",
                                 "name" : "",
                                 "songs" : []
-                            },
+                            }],
                 "favoris" : []
             }
                 
@@ -269,45 +269,41 @@ $(document).ready(function () {
     })
 
     function createPlaylist() {
+        
         var newName = $("#inputNamePlaylist").val()
-        console.log(newName)
-        var monId = myUser.user[0].id
-        console.log(monId)
-        console.log(jsonLists)
-        let x
-        for (x in jsonLists.users) {
-            console.log(x)
-            if (monId == jsonLists.users[x].id) {
-                let a
-                for (a in jsonLists.users[x].playlists) {
-                    console.log(a)
-                    if (newName = sonLists.users[x].playlists[a].name) {
-                        alerte("Nom de playlist déja existant")
-                    }
+        if (newName == "") {		                	//verif que l'input nom playlist est rempli
+            alert("Merci de donner un nom à votre nouvelle playlist")
+        } else {
+            var monId = myUser.user[0].id
+            let x
+            for (x in jsonLists.users) {
+                if (monId == jsonLists.users[x].id) {
+                    var monUser = jsonLists.users[x]      
                 }
-            } else {
-                var newObjPlaylist = {
-                        "id" : monId,
-                        "playlist" : {  "id" : uuidv4,
-                                        "name" : newName,
-                                        "songs" : []
-                                    },
-                        "favoris" : []
-                }
-                jsonLists.users.push(newObjPlaylist)
-                localStorage.setItem("preferences", JSON.stringify(jsonLists))
-                console.log("ok")
             }
         }
-    }   
 
-    /*var newUser = {
-                "id" : idUser,
-                "email" : emailRegister,
-                "pseudo" : pseudoRegister,
-                "mdp" : MdPRegister,
-                "photo" : urlIcon
-            }*/
+        let nameOK = true
+        let a
+        for (a in monUser.playlist) {
+            if (newName == monUser.playlist[a].name) {
+                    alert("Nom de playlist déja existant")
+                    nameOK = false
+            }
+        }
+        console.log(nameOK)
+
+        if (nameOK) {
+            var newObjPlaylist = {  "id" : uuidv4(),
+                                        "name" : newName,
+                                        "songs" : []
+                                    }
+            monUser.playlist.push(newObjPlaylist)
+            localStorage.setItem("preferences", JSON.stringify(jsonLists))
+            $("#modalNewPlaylist").hide()		
+            $("#modalMyPlaylist").show()
+        }       
+    }   
 
     function addToPlaylist() {
         $("#modalMyPlaylist").show()
@@ -342,7 +338,6 @@ $(document).ready(function () {
                     
                 audio.setAttribute("src", urlSong)
                 audio.play()
-
                 }
             }       
         })  
