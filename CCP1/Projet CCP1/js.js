@@ -363,13 +363,10 @@ $(document).ready(function () {
     function search(recherche) {                //Ne fonctionne que si la recherche est exactement identique  au titre ou a l'artiste
 
         var urlJsonMusique = "https://raw.githubusercontent.com/LordLoopinG/TutoGit/master/CCP1/jsonMusique.json"
-
+        //var exemple = '/"'+recherche+'"/i';
         $.getJSON(urlJsonMusique, function (data) {
             $.each(data.songs, function(key, val) {
-                //if (val.name == recherche || val.artist == recherche) {
-                //    alert("trouvé");
-                //}
-
+               
             if (val.name.search(recherche) !=-1 || val.artist.search(recherche) !=-1) {
                 alert(val.name + " de " + val.artist)
             }    
